@@ -3,16 +3,7 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-// ✅ Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBnsyvPC17GvBwAqylYWlbVWRvh3t8okq8",
-  authDomain: "shakthi-peethas.firebaseapp.com",
-  projectId: "shakthi-peethas",
-  storageBucket: "shakthi-peethas.appspot.com",
-  messagingSenderId: "910792313415",
-  appId: "1:910792313415:web:39448c248cbb745851ff62",
-  measurementId: "G-ZJ7LW22H2R"
-};
+import { firebaseConfig } from './config.js';
 
 // ✅ Initialize Firebase
 const app = initializeApp(firebaseConfig);

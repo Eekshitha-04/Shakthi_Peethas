@@ -7,8 +7,6 @@
         <title>Shakthi-Peethas</title>
         <link rel="stylesheet" href="homepage.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
         <style> 
         #google_translate_element {
     position: absolute;
@@ -471,7 +469,7 @@
     <button onclick="sendMessage()">Send</button>
   </div>
 </div>
-        <script src="homepage.js"></script>
+        <script type="module" src="homepage.js"></script>
         <script>
   window.addEventListener("DOMContentLoaded", () => {
     const hash = window.location.hash;
@@ -497,18 +495,12 @@
   }
   });
 </script>
- <script>
-    const firebaseConfigReview = {
-    apiKey: "AIzaSyCiDqFQ0YKsbHUy4QS5NRzY0C0tJ2pirzs",
-    authDomain: "shaktipeethareviews.firebaseapp.com",
-    databaseURL: "https://shaktipeethareviews-default-rtdb.firebaseio.com",
-    projectId: "shaktipeethareviews",
-    storageBucket: "shaktipeethareviews.firebasestorage.app",
-    messagingSenderId: "815409406003",
-    appId: "1:815409406003:web:82485d40ba6a91260c0346"
-  };
 
-  // Initialize as secondary app
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+ <script type="module">
+  import {firebaseConfigReview } from './config.js';
+
   const reviewApp = firebase.initializeApp(firebaseConfigReview, "reviewApp");
   const reviewDb = reviewApp.database();
 
@@ -646,8 +638,8 @@
         speechSynthesis.getVoices();
     };
 </script>
-<script>
-  const GEMINI_API_KEY = "AIzaSyAuv5e9GRI6VHzd1bUETHiRh18g4-bVyyk"; 
+<script type="module">
+  import { GEMINI_API_KEY } from './config.js'; 
   function toggleChatbot() {
     const chatbot = document.getElementById('chatbotWindow');
     chatbot.style.display = chatbot.style.display === 'flex' ? 'none' : 'flex';
@@ -700,20 +692,14 @@
       replaceLastBotMessage("Error getting response from Gemini.");
     }
   }
+  window.sendMessage = sendMessage;
+  window.toggleChatbot = toggleChatbot;
 </script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBnsyvPC17GvBwAqylYWlbVWRvh3t8okq8",
-    authDomain: "shakthi-peethas.firebaseapp.com",
-    projectId: "shakthi-peethas",
-    storageBucket: "shakthi-peethas.appspot.com",
-    messagingSenderId: "910792313415",
-    appId: "1:910792313415:web:39448c248cbb745851ff62"
-  };
+  import { firebaseConfig } from './config.js';
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);

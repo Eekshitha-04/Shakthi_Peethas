@@ -43,7 +43,7 @@
   </div>
   <!-- Right image -->
    <div class="info-image">
-    <div class="slider-wrapper-half" onmouseover="stopAutoSlide()" onmouseout="startAutoSlide()">
+    <div class="slider-wrapper-half">
       <h3 style="padding-top: 0;">IMAGES</h3>
       <button class="slider-btn prev" onclick="manualSlide(-1)">⟨</button>
   <div class="slider-track-half" id="sliderTrackHalf"></div>
@@ -82,11 +82,11 @@
   </div>
   <script>
   function goToInfoTab() {
-    // Use hash so homepage can detect and activate the "Information" tab
+
     window.location.href = "homepage.html#info-noaudio";
   }
 </script>
-<script src="shakti9.js"></script>
+<script type="module" src="shakti9.js"></script>
 <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement(

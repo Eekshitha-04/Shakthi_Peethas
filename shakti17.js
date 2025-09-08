@@ -182,12 +182,11 @@ const sliderImages = [
 const sliderTrackHalf = document.getElementById("sliderTrackHalf");
 let halfIndex = 1;
 let autoSlideInterval;
-const slideWidth = 70 + 2; // 70% + 2% gap
+const slideWidth = 70 + 2; 
 
 function buildHalfSlider() {
   sliderTrackHalf.innerHTML = '';
 
-  // Clone last slide first for seamless loop
   const lastClone = createSlide(sliderImages[sliderImages.length - 1]);
   sliderTrackHalf.appendChild(lastClone);
 
@@ -197,7 +196,6 @@ function buildHalfSlider() {
     sliderTrackHalf.appendChild(slide);
   });
 
-  // Clone first slide last
   const firstClone = createSlide(sliderImages[0]);
   sliderTrackHalf.appendChild(firstClone);
 
@@ -228,12 +226,12 @@ function setSlidePosition(index) {
   if (!slides[index]) return;
 
   const slide = slides[index];
-  const slideWidth = slide.offsetWidth + 20; // 20px = gap
+  const slideWidth = slide.offsetWidth + 20;
   const centerOffset = (slide.offsetLeft + slideWidth / 2) - (wrapper.offsetWidth / 2);
 
   track.style.transform = `translateX(-${centerOffset}px)`;
 
-  // Reset all slide classes
+
   slides.forEach((s, i) => {
     s.classList.remove('active', 'prev');
     if (i === index) s.classList.add('active');
@@ -244,7 +242,7 @@ function setSlidePosition(index) {
 
 function scrollHalfSlider() {
   const slides = document.querySelectorAll('.slide-half');
-  if (halfIndex >= sliderImages.length + 1) return; // prevent rapid clicks
+  if (halfIndex >= sliderImages.length + 1) return; 
   halfIndex++;
 
   setSlidePosition(halfIndex);
@@ -255,7 +253,7 @@ function scrollHalfSlider() {
 function handleLoop() {
   const slides = document.querySelectorAll('.slide-half');
   if (halfIndex === sliderImages.length + 1) {
-    // Moved past last (cloned first) → jump to real first
+    
     sliderTrackHalf.style.transition = "none";
     halfIndex = 1;
     setSlidePosition(halfIndex);
@@ -265,7 +263,7 @@ function handleLoop() {
   }
 
   if (halfIndex === 0) {
-    // Moved past first (cloned last) → jump to real last
+    
     sliderTrackHalf.style.transition = "none";
     halfIndex = sliderImages.length;
     setSlidePosition(halfIndex);
@@ -286,6 +284,9 @@ function stopAutoSlide() {
 window.addEventListener("DOMContentLoaded", () => {
   buildHalfSlider();
   startAutoSlide();
+  const wrapper = document.querySelector(".slider-wrapper-half");
+  wrapper.addEventListener("mouseover", stopAutoSlide);
+  wrapper.addEventListener("mouseout", startAutoSlide);
 });
 function manualSlide(direction) {
   const slides = document.querySelectorAll('.slide-half');
@@ -301,11 +302,11 @@ function manualSlide(direction) {
   }
 
   setSlidePosition(halfIndex);
-  stopAutoSlide();   // Optional: stop auto-slide when manually clicked
-  startAutoSlide();  // Optional: restart after click
+  stopAutoSlide();   
+  startAutoSlide(); 
 }
 
-const apiKey = 'a20b221e9ef5baed6d9d0d37f7db90df';
+import { apiKey, GEMINI_API_KEY } from './config.js';
 const lat = 25.3109;
 const lon = 83.0104;
 
@@ -346,7 +347,6 @@ let isSpeaking = false;
 let isPaused = false;
 let textToRead = "";
 
-const GEMINI_API_KEY = "AIzaSyAuv5e9GRI6VHzd1bUETHiRh18g4-bVyyk"; 
   function toggleChatbot() {
     const chatbot = document.getElementById('chatbotWindow');
     chatbot.style.display = chatbot.style.display === 'flex' ? 'none' : 'flex';
@@ -404,30 +404,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const dropdown = document.getElementById("userDropdown");
 
   userButton.addEventListener("click", (e) => {
-    e.stopPropagation(); // Prevent event bubbling
+    e.stopPropagation(); 
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
   });
 
-  // Hide dropdown when clicking outside
   document.addEventListener("click", (e) => {
     if (!e.target.closest("#userMenu")) {
       dropdown.style.display = "none";
     }
   });
 });
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { firebaseConfig } from './config.js';
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logoutBtn");
-
-  logoutBtn.addEventListener("click", () => {
-    // Optional: Clear session/local storage if used
-    // localStorage.clear();
-
-    // Redirect to homepage
-    window.location.href = "login.html"; // ✅ Change if your filename is different
-  });
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);  // Proper signOut
+        window.location.href = "login.html";
+      } catch (err) {
+        console.error("Logout failed:", err);
+      }
+    });
+  }
 });
-firebase.auth().signOut().then(() => {
-  window.location.href = "login.html";
-}).catch((error) => {
-  console.error("Logout failed:", error);
-});
+
+window.manualSlide = manualSlide;
+window.stopAutoSlide = stopAutoSlide;
+window.startAutoSlide = startAutoSlide;
+window.toggleChatbot = toggleChatbot;
+window.sendMessage = sendMessage;
+window.showPopup = showPopup;
+window.closePopup = closePopup;

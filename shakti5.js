@@ -283,6 +283,9 @@ function stopAutoSlide() {
 window.addEventListener("DOMContentLoaded", () => {
   buildHalfSlider();
   startAutoSlide();
+   const wrapper = document.querySelector(".slider-wrapper-half");
+  wrapper.addEventListener("mouseover", stopAutoSlide);
+  wrapper.addEventListener("mouseout", startAutoSlide);
 });
 function manualSlide(direction) {
   const slides = document.querySelectorAll('.slide-half');
@@ -298,8 +301,8 @@ function manualSlide(direction) {
   }
 
   setSlidePosition(halfIndex);
-  stopAutoSlide();   // Optional: stop auto-slide when manually clicked
-  startAutoSlide();  // Optional: restart after click
+  stopAutoSlide();   
+  startAutoSlide();  
 }
 let synth = window.speechSynthesis;
 let utterance;
@@ -307,7 +310,7 @@ let isSpeaking = false;
 let isPaused = false;
 let textToRead = "";
 
-const apiKey = 'a20b221e9ef5baed6d9d0d37f7db90df'; // Replace with your real API key
+import { apiKey, GEMINI_API_KEY } from './config.js';
 
 // Kamakhya Temple (Guwahati)
 const lat = 15.878;
@@ -345,7 +348,6 @@ function fetchWeather() {
     });
 }
 
-const GEMINI_API_KEY = "AIzaSyAuv5e9GRI6VHzd1bUETHiRh18g4-bVyyk"; 
   function toggleChatbot() {
     const chatbot = document.getElementById('chatbotWindow');
     chatbot.style.display = chatbot.style.display === 'flex' ? 'none' : 'flex';
@@ -414,19 +416,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { firebaseConfig } from './config.js';
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logoutBtn");
-
-  logoutBtn.addEventListener("click", () => {
-    // Optional: Clear session/local storage if used
-    // localStorage.clear();
-
-    // Redirect to homepage
-    window.location.href = "login.html"; // ✅ Change if your filename is different
-  });
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);  // Proper signOut
+        window.location.href = "login.html";
+      } catch (err) {
+        console.error("Logout failed:", err);
+      }
+    });
+  }
 });
-firebase.auth().signOut().then(() => {
-  window.location.href = "login.html";
-}).catch((error) => {
-  console.error("Logout failed:", error);
-});
+window.manualSlide = manualSlide;
+window.stopAutoSlide = stopAutoSlide;
+window.startAutoSlide = startAutoSlide;
+window.toggleChatbot = toggleChatbot;
+window.sendMessage = sendMessage;
+window.showPopup = showPopup;
+window.closePopup = closePopup;
